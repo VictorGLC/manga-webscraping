@@ -24,16 +24,8 @@ def download_manga_page(chapter, page, chapter_folder):
 
         # o seletor busca qualquer tag img que contenha 'image-' no id
         img_tag = soup.find('img', id=lambda x: x and x.startswith('image-'))
-        
-        if not img_tag:
-            return False
 
-        img_url = img_tag.get('data-src') or img_tag.get('src')
-        
-        if not img_url:
-            return False
-
-        img_url = img_url.strip() # trata espaços em branco do link
+        img_url = img_tag.get('data-src') or img_tag.get('src').strip()
 
         # define o nome do arquivo
         extension = img_url.split('.')[-1].split('?')[0] # pega .jpg ou .png
