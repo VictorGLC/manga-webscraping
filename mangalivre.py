@@ -2,8 +2,8 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-BASE_PATH = r"D:\Mangas\NomeManga"
-BASE_URL = "https://mangalivre.blog/manga/nome-manga"
+BASE_PATH = r"D:\Mangas\Vagabond"
+BASE_URL = "https://mangalivre.blog/manga/vagabond"
 
 # headers para o site nao bloquear a requisiçao
 HEADERS = {
@@ -49,13 +49,13 @@ def get_chapters(url_manga):
     chapter_links = soup.find_all('a', class_='chapter-link')
 
     for link in chapter_links:
-        chapter_number = link.text.strip().split()[1].strip(":")  # extrai o número do capítulo
+        chapter_number = int(link.text.strip().split()[1].strip(":"))  # extrai o número do capítulo
         chapters[chapter_number] = link['href']
     
     return chapters
 
 def main():
-    start_chap, end_chap = 68, 69
+    start_chap, end_chap = 1, 15
 
     print(f"Iniciando download do capitulo {start_chap} ao {end_chap}...")
     chapters = get_chapters(BASE_URL)
@@ -65,7 +65,9 @@ def main():
         chapter_folder = os.path.join(BASE_PATH, f"Capitulo {chapter}")
         os.makedirs(chapter_folder, exist_ok=True)
 
-        download_manga_chapter(chapters[str(chapter)], chapter_folder)
+        download_manga_chapter(chapters[chapter], chapter_folder)
+
+        print(f"Capítulo {chapter} baixado com sucesso")
 
     print("Processo concluído!")
 
